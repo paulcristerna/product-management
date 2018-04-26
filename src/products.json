@@ -1,0 +1,22 @@
+{
+    "products": [
+        {
+            "code": "0001",
+            "description": "lorem",
+            "price": "100",
+            "quantity": "100"
+        },
+        {
+            "code": "0002",
+            "description": "lorem",
+            "price": "100",
+            "quantity": "100"
+        },
+        {
+            "code": "0003",
+            "description": "lorem",
+            "price": "100",
+            "quantity": "100"
+        }
+    ]
+}
