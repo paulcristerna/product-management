@@ -15,7 +15,7 @@ class Products extends Component {
         this.removeProduct = this.removeProduct.bind(this);
 
         this.app = firebase.initializeApp(DB_CONFIG);
-        this.db = this.app.database().ref().child('products')
+        this.db = this.app.database().ref().child('products');
     }
 
     componentDidMount() {
@@ -33,7 +33,7 @@ class Products extends Component {
 
         this.db.on('child_removed', snap => {
             for(let i = 0; i < products.length; i++) {
-                if(products[i].id == snap.key) {
+                if(products[i].id === snap.key) {
                     products.splice(i, 1);
                 }
             }
@@ -67,11 +67,11 @@ class Products extends Component {
                                 <table className="highlight">
                                     <thead>
                                         <tr>
-                                        <th>Code</th>
-                                        <th>Description</th>
-                                        <th>Price</th>
-                                        <th>Quantity</th>
-                                        <th></th>
+                                            <th>Code</th>
+                                            <th>Description</th>
+                                            <th>Price</th>
+                                            <th>Quantity</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -96,7 +96,7 @@ class Products extends Component {
 
                     <a className="btn-floating btn-large waves-effect waves-light indigo modal-trigger" href="#modalFormProduct"><i className="material-icons">add</i></a>
 
-                    <FormProduct title="Add Product" onAddProduct={this.handleAddProduct} />
+                    <FormProduct title='Add Product' onAddProduct={this.handleAddProduct} />
                     
                 </div>
             </div>
