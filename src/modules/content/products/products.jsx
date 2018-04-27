@@ -1,32 +1,58 @@
 import React, { Component } from 'react';
-import FormProduct from './formProduct';
-import { products } from '../../products.json';
+
+import firebase from 'firebase';
+import { DB_CONFIG } from '../../config/config';
+import 'firebase/database';
+
+import FormProduct from './formProduct.jsx';
 
 class Products extends Component {
     constructor() {
         super();
-        this.state = {
-            products
-        }
+        this.state = {products: []}
 
         this.handleAddProduct = this.handleAddProduct.bind(this);
         this.removeProduct = this.removeProduct.bind(this);
+
+        this.app = firebase.initializeApp(DB_CONFIG);
+        this.db = this.app.database().ref().child('products')
+    }
+
+    componentDidMount() {
+        const { products } = this.state;
+        this.db.on('child_added', snap => {
+            products.push({
+                id: snap.key,
+                code: snap.val().code,
+                description: snap.val().description,
+                price: snap.val().price,
+                quantity: snap.val().quantity
+            })
+            this.setState({products});
+        });
+
+        this.db.on('child_removed', snap => {
+            for(let i = 0; i < products.length; i++) {
+                if(products[i].id == snap.key) {
+                    products.splice(i, 1);
+                }
+            }
+            this.setState({products});
+        });
     }
 
     handleAddProduct(product) {
-        this.setState({
-            products: [...this.state.products, product]
-        })
+        this.db.push().set({
+            code: product.code, 
+            description: product.description, 
+            price: product.price, 
+            quantity: product.quantity
+        });
     }
 
     removeProduct(index) {
         if(window.confirm('Are you sure you mant to delete it?')) {
-
-            this.setState({
-                products: this.state.products.filter((e, i) => {
-                    return i != index
-                })
-            })
+            this.db.child(index).remove();
         }
     }
 
@@ -57,7 +83,7 @@ class Products extends Component {
                                                 <td>${parseFloat(item.price).toFixed(2)}</td>
                                                 <td>{parseFloat(item.quantity).toFixed(2)}</td>
                                                 <td>
-                                                    <a className="waves-effect waves-light btn red" onClick={this.removeProduct.bind(this, i)}><i className="material-icons">delete</i></a>
+                                                    <a className="waves-effect waves-light btn red" onClick={this.removeProduct.bind(this, item.id)}><i className="material-icons">delete</i></a>
                                                 </td>
                                             </tr>
                                         )
@@ -68,12 +94,11 @@ class Products extends Component {
                         </div>
                     </div>
 
-                    <a className="btn-floating btn-large waves-effect waves-light indigo right modal-trigger" href="#modalFormProduct"><i className="material-icons">add</i></a>
+                    <a className="btn-floating btn-large waves-effect waves-light indigo modal-trigger" href="#modalFormProduct"><i className="material-icons">add</i></a>
 
+                    <FormProduct title="Add Product" onAddProduct={this.handleAddProduct} />
+                    
                 </div>
-
-                <FormProduct title="Add Product" onAddProduct={this.handleAddProduct} />
-                
             </div>
         );
     }

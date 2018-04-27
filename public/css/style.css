@@ -12,3 +12,18 @@
 .icon-block .material-icons {
 	font-size: inherit;
 }
+
+.btn-floating {
+  position: absolute;
+  right: 15%;
+  bottom: 20%;
+  z-index: 1;
+}
+
+.brand-logo {
+  font-family: 'Noto Sans', sans-serif;
+}
+
+.products {
+  min-height: 500px;
+}

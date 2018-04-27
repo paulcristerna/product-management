@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
-class Navigation extends Component {
+class Header extends Component {
   render() {
     return (
-      <div className="navigation">
-        <nav className="indigo" role="navigation">
+      <div className="header">
+        <nav className="indigo">
           <div className="nav-wrapper container"><a id="logo-container" href="#" className="brand-logo">{this.props.title}</a>
             <ul className="right hide-on-med-and-down">
               <li><a href="#">Products</a></li>
@@ -21,4 +21,4 @@ class Navigation extends Component {
   }
 }
 
-export default Navigation;
+export default Header;
